@@ -2,12 +2,12 @@ function getDistance(x1, y1, x2, y2) {
   let distance = 0;
 
   if (arguments.length < 4) {
-    throw new Error("argument absent");
+    throw new Error();
   }
 
   Array.from(arguments).forEach((element) => {
     if (!Number.isInteger(element) || element < -1000 || element > 1000) {
-      throw new Error(`incorrect argument: ${element}`);
+      throw new Error();
     }
   });
 
@@ -27,7 +27,7 @@ function switchPlaces(arr) {
   let divider = 0;
 
   if (!arr || !Array.isArray(arr)) {
-    throw new Error(`argument: ${arr} is not an array`);
+    throw new Error();
   }
 
   newArr = arr.slice();
@@ -57,7 +57,7 @@ function getDivisors(num) {
   let dividersArr = [];
 
   if (!num || !Number.isInteger(num)) {
-    throw new Error(`incorrect argument: ${num}`);
+    throw new Error();
   }
 
   for (let i = num; i > 0; i--) {
