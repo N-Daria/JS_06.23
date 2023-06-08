@@ -58,3 +58,20 @@ function bubbleSort(arr) {
 
   return newArr;
 }
+
+function storageWrapper(func, arr) {
+  let newArr = [];
+  if (!func || typeof func !== "function" || (arr && !Array.isArray(arr))) {
+    throw new Error("Invalid argument");
+  }
+
+  return function innerFunction() {
+    if (arr) {
+      arr.push(func());
+      return func();
+    } else {
+      newArr.push(func());
+      return newArr;
+    }
+  };
+}
