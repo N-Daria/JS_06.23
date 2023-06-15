@@ -171,3 +171,218 @@ class LinkedList {
     }
   }
 }
+
+class Car {
+  #brand = "";
+  #model = "";
+  #yearOfManufacturing = 1950;
+  #maxSpeed = 100;
+  #maxFuelVolume = 20;
+  #fuelConsumption = 1;
+  #damage = 1;
+  #currentFuelVolume = 0;
+  #isStarted = false;
+  #mileage = 0;
+  #health = 100;
+
+  constructor() {}
+
+  get brand() {
+    return this.#brand;
+  }
+
+  get model() {
+    return this.#model;
+  }
+
+  get yearOfManufacturing() {
+    return this.#yearOfManufacturing;
+  }
+
+  get maxSpeed() {
+    return this.#maxSpeed;
+  }
+
+  get maxFuelVolume() {
+    return this.#maxFuelVolume;
+  }
+
+  get fuelConsumption() {
+    return this.#fuelConsumption;
+  }
+
+  get damage() {
+    return this.#damage;
+  }
+
+  get currentFuelVolume() {
+    return this.#currentFuelVolume;
+  }
+
+  get isStarted() {
+    return this.#isStarted;
+  }
+
+  get health() {
+    return this.#health;
+  }
+
+  get mileage() {
+    return this.#mileage;
+  }
+
+  set brand(value) {
+    if (typeof value !== "string" || value.length > 50 || value.length < 1) {
+      throw new Error("Invalid brand name");
+    }
+
+    this.#brand = value;
+  }
+
+  set model(value) {
+    if (typeof value !== "string" || value.length > 50 || value.length < 1) {
+      throw new Error("Invalid model name");
+    }
+
+    this.#model = value;
+  }
+
+  set yearOfManufacturing(value) {
+    if (
+      typeof value !== "number" ||
+      !Number.isInteger(value) ||
+      value < 1950 ||
+      value > new Date().getFullYear()
+    ) {
+      throw new Error("Invalid year of manufacturing");
+    }
+
+    this.#yearOfManufacturing = value;
+  }
+
+  set maxSpeed(value) {
+    if (
+      typeof value !== "number" ||
+      !Number.isInteger(value) ||
+      value > 100 ||
+      value < 330
+    ) {
+      throw new Error("Invalid max speed");
+    }
+
+    this.#maxSpeed = value;
+  }
+
+  set maxFuelVolume(value) {
+    if (
+      typeof value !== "number" ||
+      !Number.isInteger(value) ||
+      value > 100 ||
+      value < 20
+    ) {
+      throw new Error("Invalid max fuel volume");
+    }
+
+    this.#maxFuelVolume = value;
+  }
+
+  set fuelConsumption(value) {
+    if (typeof value !== "number" || !Number.isInteger(value) || value > 0) {
+      throw new Error("Invalid fuel consumption");
+    }
+
+    this.#fuelConsumption = value;
+  }
+
+  set damage(value) {
+    if (
+      typeof value !== "number" ||
+      !Number.isInteger(value) ||
+      value > 5 ||
+      value < 1
+    ) {
+      throw new Error("Invalid damage");
+    }
+
+    this.#damage = value;
+  }
+
+  start() {
+    if (this.#isStarted) {
+      throw new Error("Car has already started");
+    } else {
+      this.#isStarted = true;
+    }
+  }
+
+  shutDownEngine() {
+    if (!this.#isStarted) {
+      throw new Error("Car hasn't started yet");
+    } else {
+      this.#isStarted = false;
+    }
+  }
+
+  fillUpGasTank(num) {
+    if (typeof num !== "number" || !Number.isInteger(num) || num < 0) {
+      throw new Error("Invalid fuel amount");
+    } else if (num + this.#currentFuelVolume > this.#maxFuelVolume) {
+      throw new Error("Too much fuel");
+    } else if (this.#isStarted) {
+      throw new Error("You have to shut down your car first");
+    }
+
+    this.#currentFuelVolume = num + this.#currentFuelVolume;
+  }
+
+  drive(speed, hours) {
+    if (typeof speed !== "number" || !Number.isInteger(speed) || speed < 0) {
+      throw new Error("Invalid speed");
+    } else if (
+      typeof hours !== "number" ||
+      !Number.isInteger(hours) ||
+      hours < 0
+    ) {
+      throw new Error("Invalid duration");
+    } else if (speed > this.#maxSpeed) {
+      throw new Error("Car can't go this fast");
+    } else if (!this.#isStarted) {
+      throw new Error("You have to start your car first");
+      // needs to finish
+    } else if (
+      this.#fuelConsumption / ((speed * hours) / 100) >
+      this.#currentFuelVolume
+    ) {
+      throw new Error("You don't have enough fuel");
+    } else if (((speed * hours) / 100) * this.#damage > this.#health) {
+      throw new Error("Your car won’t make it");
+    }
+
+    const neededFuel = this.#fuelConsumption / ((speed * hours) / 100);
+    const neededHealth = ((speed * hours) / 100) * this.#damage;
+
+    this.#currentFuelVolume = this.#currentFuelVolume - neededFuel;
+    this.#health = this.#health - neededHealth;
+    this.#mileage = this.#mileage + speed * hours;
+  }
+
+  repair() {
+    if (this.#isStarted) {
+      throw new Error("You have to shut down your car first");
+    } else if (this.#currentFuelVolume < this.#maxFuelVolume) {
+      throw new Error("You have to fill up your gas tank first");
+    }
+
+    this.#health = 100;
+  }
+
+  getFullAmount() {
+    debugger;
+
+    if (this.#currentFuelVolume === this.#maxFuelVolume) {
+      return 0;
+    }
+
+    return this.#maxFuelVolume - this.#currentFuelVolume;
+  }
+}
