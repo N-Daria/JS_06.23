@@ -22,8 +22,8 @@ class Stack {
   push(elem) {
     if (this.length < this.maxLength) {
       this.length += 1;
-      const newel = new StackElement(this.lastElement, elem);
-      this.lastElement = newel;
+      const newEl = new StackElement(this.lastElement, elem);
+      this.lastElement = newEl;
     } else {
       throw new Error("Limit exceeded");
     }
@@ -82,26 +82,92 @@ class Stack {
   }
 }
 
+class LinkedListElement {
+  constructor(value, next) {
+    this.value = value;
+    this.next = next || null;
+  }
+}
+
 class LinkedList {
   constructor() {
-    this.list = [];
+    this.head = null;
+    this.length = 0;
   }
 
-  // добавляет элемент в конец связного списка
-  append(elem) {}
+  prepend(value) {
+    this.head = new LinkedListElement(value, this.head);
+    this.length++;
+  }
 
-  //  добавляет элемент в начало связного списка
-  prepend(elem) {}
+  append(value) {
+    let node = null;
+    let current = null;
 
-  // осуществляет поиск по элементам по заданному значению и возвращает найденный элемент (null если такого элемента нет) (можно использовать обычный цикл для итерации по элементам связного списка)
-  find(elem) {}
+    if (!this.head) {
+      return this.prepend(value);
+    }
 
-  //  - возвращает новый массив, состоящий из элементов связного списка (пустой массив, если список пуст)  Можно использовать:
-  // - цикл для итерации по элементам листа
-  // - методы и свойства массива
-  toArray() {}
+    current = this.head;
+    node = new LinkedListElement(value);
 
-  // Реализовать статические публичные методы:
-  // fromIterable(iterable) - возвращает новый LinkedList, элементами которого служат элементы переданной итерируемой сущности. Если сущность не является итерируемой выкидывает ошибку. (Not iterable). (можно использовать цикл для итерации по элементам массива, из элементов которого нужно собрать Linked list. Для записи используем ваш метод .append)
-  fromIterable(iterable) {}
+    function inerate(el) {
+      if (el && el.next) {
+        current = el.next;
+        inerate(current);
+      } else {
+        return;
+      }
+    }
+
+    inerate(current);
+
+    current.next = node;
+    this.length++;
+  }
+
+  find(index) {
+    let current = this.head;
+    let count = 0;
+
+    while (current) {
+      if (count === index) {
+        return current;
+      }
+
+      count++;
+      current = current.next;
+    }
+
+    return null;
+  }
+
+  toArray() {
+    const arr = [];
+    let current = this.head;
+    let count = 0;
+
+    while (current) {
+      arr.push(current.value);
+
+      count++;
+      current = current.next;
+    }
+
+    return arr;
+  }
+
+  static fromIterable(iterable) {
+    try {
+      const newLinkedList = new LinkedList(iterable.length);
+
+      iterable.forEach((el) => {
+        newLinkedList.append(el);
+      });
+
+      return newLinkedList;
+    } catch {
+      throw new Error("Not iterable");
+    }
+  }
 }
