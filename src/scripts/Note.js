@@ -37,8 +37,8 @@ export default class Note {
     this.elementTitle.textContent = this.title;
     this.elementText.textContent = this.text;
 
-    this.elementDate.textContent = this.formatDate(this.date);
-    this.elementUpdate.textContent = this.formatDate(this.update);
+    this.elementDate.textContent = `Дата создания заметки: ${this.formatDate(this.date)}`;
+    this.elementUpdate.textContent = `Последнее изменение: ${this.formatDate(this.update)}`;
 
     this.setEventListeners();
 

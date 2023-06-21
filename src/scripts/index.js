@@ -5,6 +5,7 @@ import FormValidator from './FormValidator';
 import Note from './Note';
 
 const formValidation = new FormValidator(validationSettings, form);
+const noteList = { ...localStorage };
 
 function createNote(data) {
   const newNote = new Note(data);
@@ -40,8 +41,25 @@ function handleSubmit(e) {
   if (localStorage.getItem(id)) {
     const note = createNote(serialize());
     render(note);
+
+    inputList.forEach((element) => {
+      element.value = '';
+    });
   }
 }
+
+function getStorage() {
+  const arrNotes = Object.entries(noteList);
+
+  arrNotes.forEach((note) => {
+    if (new Date(note[0]) !== 'Invalid Date' && typeof note[0] !== 'number') {
+      const noteCard = createNote(JSON.parse(note[1]));
+      render(noteCard);
+    }
+  });
+}
+
+getStorage();
 
 submitButton.addEventListener('click', () => {
   formValidation.removeInputListener.call(formValidation);
