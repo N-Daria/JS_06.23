@@ -5,6 +5,7 @@ export default class Note {
     this.date = new Date();
     this.handleDeleteClick = config.handleDeleteClick;
     this.handleUpdateClick = config.handleUpdateClick;
+    this.id = config.id;
 
     this.formatter = new Intl.DateTimeFormat('ru', {
       hour: 'numeric',
@@ -47,7 +48,7 @@ export default class Note {
   }
 
   setEventListeners() {
-    this.deleteButton.addEventListener('click', this.handleDeleteClick);
+    this.deleteButton.addEventListener('click', () => this.handleDeleteClick(this.note));
     this.updateButton.addEventListener('click', this.handleUpdateClick);
   }
 }

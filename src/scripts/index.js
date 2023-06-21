@@ -3,9 +3,15 @@ import '../styles/index.scss';
 import { form, validationSettings, submitButton, inputList, container } from '../consts/consts';
 import FormValidator from './FormValidator';
 import Note from './Note';
+import Popup from './Popup';
 
 const formValidation = new FormValidator(validationSettings, form);
-const noteList = { ...localStorage };
+
+const noteListArray = Object.entries({ ...localStorage });
+let currentNote = null;
+
+const popup = new Popup(handleConfirmDelete);
+popup.setEventListeners();
 
 function handleUpdateClick() {
   console.log('update button');
@@ -13,17 +19,25 @@ function handleUpdateClick() {
   console.log(this);
 }
 
-function handleDeleteClick() {
-  console.log('delete button');
-
-  console.log(this);
+function handleConfirmDelete() {
+  noteListArray.forEach((el) => {
+    if (JSON.parse(el[1]).title === currentNote.title) {
+      console.log('compare & delete');
+    }
+  });
 }
 
-function createNote(data) {
+function handleDeleteClick() {
+  popup.open();
+  currentNote = this;
+}
+
+function createNote(data, id) {
   const newNote = new Note({
     data,
     handleUpdateClick,
     handleDeleteClick,
+    id,
   });
 
   return newNote.getNote();
@@ -55,7 +69,7 @@ function handleSubmit(e) {
   }
 
   if (localStorage.getItem(id)) {
-    const note = createNote(serialize());
+    const note = createNote(serialize(), id);
     render(note);
 
     inputList.forEach((element) => {
@@ -65,9 +79,7 @@ function handleSubmit(e) {
 }
 
 function getStorage() {
-  const arrNotes = Object.entries(noteList);
-
-  arrNotes.forEach((note) => {
+  noteListArray.forEach((note) => {
     if (new Date(note[0]) !== 'Invalid Date' && typeof note[0] !== 'number') {
       const noteCard = createNote(JSON.parse(note[1]));
       render(noteCard);
