@@ -8,36 +8,34 @@
   </head>
 
   <body class="body">
-    <header class="">
-      <form class="note__form">
-        <label>
-          Заголовок
-
-          <!-- forValidation - class for serialization -->
-          <input
-            class="forValidation"
-            type="text"
-            placeholder="Введите заголовок"
-            required
-            maxlength="15"
-            minlength="5"
-            name="title"
-          />
-        </label>
+    <form class="note__form">
+      <label>
+        Заголовок
 
         <!-- forValidation - class for serialization -->
-        <textarea
+        <input
           class="forValidation"
-          placeholder="Введите вашу заметку здесь"
-          minlength="5"
-          maxlength="100"
+          type="text"
+          placeholder="Введите заголовок"
           required
-          name="text"
-        ></textarea>
+          maxlength="15"
+          minlength="5"
+          name="title"
+        />
+      </label>
 
-        <button type="submit" class="note__button_submit note__button_disabled">Сохранить</button>
-      </form>
-    </header>
+      <!-- forValidation - class for serialization -->
+      <textarea
+        class="forValidation"
+        placeholder="Введите вашу заметку здесь"
+        minlength="5"
+        maxlength="100"
+        required
+        name="text"
+      ></textarea>
+
+      <button type="submit" class="note__button_submit note__button_disabled">Сохранить</button>
+    </form>
 
     <main class="main">
       <ul class="note__list"></ul>
@@ -45,12 +43,14 @@
 
     <template id="note">
       <li class="note__item">
+        <p class="note__date"></p>
+
         <h2 class="note__header"></h2>
         <p class="note__text"></p>
 
         <div>
-          <p class="note__date"><span></span></p>
-          <p class="note__update"><span></span></p>
+          <button type="button" class="note__delete">delete</button>
+          <button type="button" class="note__update">update</button>
         </div>
       </li>
     </template>

@@ -1,9 +1,10 @@
 export default class Note {
   constructor(config) {
-    this.title = config.title;
-    this.text = config.text;
+    this.title = config.data.title;
+    this.text = config.data.text;
     this.date = new Date();
-    this.update = new Date();
+    this.handleDeleteClick = config.handleDeleteClick;
+    this.handleUpdateClick = config.handleUpdateClick;
 
     this.formatter = new Intl.DateTimeFormat('ru', {
       hour: 'numeric',
@@ -29,16 +30,16 @@ export default class Note {
 
   getNote() {
     this.note = this.generateTemplate();
-    this.elementTitle = this.note.querySelector('.note__header');
-    this.elementText = this.note.querySelector('.note__text');
-    this.elementDate = this.note.querySelector('.note__date');
-    this.elementUpdate = this.note.querySelector('.note__update');
 
-    this.elementTitle.textContent = this.title;
-    this.elementText.textContent = this.text;
+    this.titleElement = this.note.querySelector('.note__header');
+    this.textElement = this.note.querySelector('.note__text');
+    this.dateElement = this.note.querySelector('.note__date');
+    this.deleteButton = this.note.querySelector('.note__delete');
+    this.updateButton = this.note.querySelector('.note__update');
 
-    this.elementDate.textContent = `Дата создания заметки: ${this.formatDate(this.date)}`;
-    this.elementUpdate.textContent = `Последнее изменение: ${this.formatDate(this.update)}`;
+    this.titleElement.textContent = this.title;
+    this.textElement.textContent = this.text;
+    this.dateElement.textContent = this.formatDate(this.date);
 
     this.setEventListeners();
 
@@ -46,7 +47,7 @@ export default class Note {
   }
 
   setEventListeners() {
-    // add listeners
-    console.log(this);
+    this.deleteButton.addEventListener('click', this.handleDeleteClick);
+    this.updateButton.addEventListener('click', this.handleUpdateClick);
   }
 }

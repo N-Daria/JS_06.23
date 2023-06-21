@@ -7,8 +7,24 @@ import Note from './Note';
 const formValidation = new FormValidator(validationSettings, form);
 const noteList = { ...localStorage };
 
+function handleUpdateClick() {
+  console.log('update button');
+
+  console.log(this);
+}
+
+function handleDeleteClick() {
+  console.log('delete button');
+
+  console.log(this);
+}
+
 function createNote(data) {
-  const newNote = new Note(data);
+  const newNote = new Note({
+    data,
+    handleUpdateClick,
+    handleDeleteClick,
+  });
 
   return newNote.getNote();
 }
