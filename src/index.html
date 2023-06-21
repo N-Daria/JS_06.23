@@ -21,6 +21,7 @@
             required
             maxlength="15"
             minlength="5"
+            name="title"
           />
         </label>
 
@@ -31,6 +32,7 @@
           minlength="5"
           maxlength="100"
           required
+          name="text"
         ></textarea>
 
         <button type="submit" class="note__button_submit note__button_disabled">Сохранить</button>
@@ -42,7 +44,7 @@
     </main>
 
     <template id="note">
-      <li class="note">
+      <li class="note__item">
         <h2 class="note__header"></h2>
         <p class="note__text"></p>
 
