@@ -7,9 +7,8 @@ import Popup from './Popup';
 
 const formValidation = new FormValidator(validationSettings, form);
 
-const noteListArray = Object.entries({ ...localStorage });
+let noteListArray = Object.entries({ ...localStorage });
 let currentNote = null;
-
 const popup = new Popup(handleConfirmDelete);
 popup.setEventListeners();
 
@@ -19,12 +18,18 @@ function handleUpdateClick() {
   console.log(this);
 }
 
+function findNote(note) {
+  return noteListArray.find((el) => el[1].includes('title') && note.id === el[0]);
+}
+
 function handleConfirmDelete() {
-  noteListArray.forEach((el) => {
-    if (JSON.parse(el[1]).title === currentNote.title) {
-      console.log('compare & delete');
-    }
-  });
+  const note = findNote(currentNote);
+
+  localStorage.removeItem(note[0]);
+  noteListArray = Object.entries({ ...localStorage });
+  currentNote.note.remove();
+  popup.close();
+  currentNote = null;
 }
 
 function handleDeleteClick() {
@@ -60,10 +65,11 @@ function render(item) {
 function handleSubmit(e) {
   e.preventDefault();
 
-  const id = new Date();
+  const id = JSON.stringify(new Date());
 
   try {
     localStorage.setItem(id, JSON.stringify(serialize()));
+    noteListArray = Object.entries({ ...localStorage });
   } catch (err) {
     console.log(err);
   }
@@ -80,8 +86,8 @@ function handleSubmit(e) {
 
 function getStorage() {
   noteListArray.forEach((note) => {
-    if (new Date(note[0]) !== 'Invalid Date' && typeof note[0] !== 'number') {
-      const noteCard = createNote(JSON.parse(note[1]));
+    if (note[1].includes('title')) {
+      const noteCard = createNote(JSON.parse(note[1]), note[0]);
       render(noteCard);
     }
   });
