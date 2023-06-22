@@ -14,19 +14,49 @@ let changingNote = null;
 const popup = new Popup(handleConfirmDelete);
 popup.setEventListeners();
 
+function handleCancelChangingClick() {
+  changingNote.replaceWith(currentNote);
+}
+
 function handleUpdateClick() {
+  if (changingNote) {
+    handleCancelChangingClick();
+  }
+
   currentNote = this.note;
   changingNote = this.getChangingNote();
 
   currentNote.replaceWith(changingNote);
+
+  const updateFormValidation = new FormValidator(validationSettings, changingNote);
+
+  changingNote.querySelector('.changing__submit').addEventListener('click', () => {
+    updateFormValidation.removeInputListener.call(updateFormValidation);
+    updateFormValidation.showInvalidInput.call(updateFormValidation);
+    updateFormValidation.setInputListener.call(updateFormValidation);
+  });
 }
 
-function handleSubmitChangingClick() {
-  console.log(this);
-}
+function handleSubmitChangingClick(event) {
+  event.preventDefault();
 
-function handleCancelChangingClick() {
-  changingNote.replaceWith(currentNote);
+  const updateFormInputList = Array.from(changingNote.querySelectorAll('.forValidation'));
+
+  if (localStorage.getItem(changingNote.id)) {
+    try {
+      localStorage.removeItem(changingNote.id);
+      localStorage.setItem(changingNote.id, JSON.stringify(serialize(updateFormInputList)));
+      noteListArray = Object.entries({ ...localStorage });
+    } catch (err) {
+      console.log(err);
+
+      return;
+    }
+
+    const note = createNote(serialize(updateFormInputList), changingNote.id);
+
+    changingNote.replaceWith(note);
+  }
 }
 
 function findNote(note) {
@@ -61,10 +91,10 @@ function createNote(data, id) {
   return newNote.getNote();
 }
 
-function serialize() {
+function serialize(list) {
   const formData = {};
 
-  inputList.forEach((element) => {
+  list.forEach((element) => {
     formData[element.name] = element.value;
   });
 
@@ -81,14 +111,16 @@ function handleSubmit(e) {
   const id = JSON.stringify(new Date());
 
   try {
-    localStorage.setItem(id, JSON.stringify(serialize()));
+    localStorage.setItem(id, JSON.stringify(serialize(inputList)));
     noteListArray = Object.entries({ ...localStorage });
   } catch (err) {
     console.log(err);
+
+    return;
   }
 
   if (localStorage.getItem(id)) {
-    const note = createNote(serialize(), id);
+    const note = createNote(serialize(inputList), id);
     render(note);
 
     inputList.forEach((element) => {

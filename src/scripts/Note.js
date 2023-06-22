@@ -40,6 +40,7 @@ export default class Note {
     this.dateElement = this.note.querySelector('.note__date');
     this.deleteButton = this.note.querySelector('.note__button_delete');
     this.updateButton = this.note.querySelector('.note__button_update');
+    this.note.setAttribute('id', this.id);
 
     this.titleElement.textContent = this.title;
     this.textElement.textContent = this.text;
@@ -70,6 +71,8 @@ export default class Note {
     this.cancelChanginglButton = this.changingNote.querySelector('.changing__cancel');
     this.updateChangingButton = this.changingNote.querySelector('.changing__submit');
 
+    this.changingNote.setAttribute('id', this.id);
+
     this.titleChangingElement.value = this.title;
     this.textChangingElement.value = this.text;
 
@@ -82,6 +85,6 @@ export default class Note {
 
   changingSetEventListeners() {
     this.cancelChanginglButton.addEventListener('click', () => this.handleCancelChangingClick());
-    this.updateChangingButton.addEventListener('click', () => this.handleSubmitChangingClick());
+    this.updateChangingButton.addEventListener('click', this.handleSubmitChangingClick);
   }
 }
