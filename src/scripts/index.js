@@ -41,11 +41,13 @@ function handleSubmitChangingClick(event) {
   event.preventDefault();
 
   const updateFormInputList = Array.from(changingNote.querySelectorAll('.forValidation'));
+  const inputsData = serialize(updateFormInputList);
+  inputsData.updatedTime = new Date().toString();
 
   if (localStorage.getItem(changingNote.id)) {
     try {
       localStorage.removeItem(changingNote.id);
-      localStorage.setItem(changingNote.id, JSON.stringify(serialize(updateFormInputList)));
+      localStorage.setItem(changingNote.id, JSON.stringify(inputsData));
       noteListArray = Object.entries({ ...localStorage });
     } catch (err) {
       console.log(err);
@@ -53,7 +55,7 @@ function handleSubmitChangingClick(event) {
       return;
     }
 
-    const note = createNote(serialize(updateFormInputList), changingNote.id);
+    const note = createNote(inputsData, changingNote.id);
 
     changingNote.replaceWith(note);
   }
@@ -108,10 +110,12 @@ function render(item) {
 function handleSubmit(e) {
   e.preventDefault();
 
-  const id = JSON.stringify(new Date());
+  const id = new Date().toString();
+
+  const inputsData = serialize(inputList);
 
   try {
-    localStorage.setItem(id, JSON.stringify(serialize(inputList)));
+    localStorage.setItem(id, JSON.stringify(inputsData));
     noteListArray = Object.entries({ ...localStorage });
   } catch (err) {
     console.log(err);
@@ -120,7 +124,7 @@ function handleSubmit(e) {
   }
 
   if (localStorage.getItem(id)) {
-    const note = createNote(serialize(inputList), id);
+    const note = createNote(inputsData, id);
     render(note);
 
     inputList.forEach((element) => {

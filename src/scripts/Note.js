@@ -2,12 +2,13 @@ export default class Note {
   constructor(config) {
     this.title = config.data.title;
     this.text = config.data.text;
-    this.date = new Date();
+    this.date = new Date(config.id);
     this.handleDeleteClick = config.handleDeleteClick;
     this.handleUpdateClick = config.handleUpdateClick;
     this.id = config.id;
     this.handleCancelChangingClick = config.handleCancelChangingClick;
     this.handleSubmitChangingClick = config.handleSubmitChangingClick;
+    this.updated = config.data.updatedTime;
 
     this.formatter = new Intl.DateTimeFormat('ru', {
       hour: 'numeric',
@@ -44,8 +45,10 @@ export default class Note {
 
     this.titleElement.textContent = this.title;
     this.textElement.textContent = this.text;
-    this.dateElement.textContent = this.formatDate(this.date);
 
+    this.dateElement.textContent = this.updated
+      ? `Updated ${this.formatDate(new Date(this.updated))}`
+      : this.formatDate(this.date);
     this.setEventListeners();
 
     return this.note;
