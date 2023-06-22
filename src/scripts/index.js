@@ -9,13 +9,24 @@ const formValidation = new FormValidator(validationSettings, form);
 
 let noteListArray = Object.entries({ ...localStorage });
 let currentNote = null;
+let changingNote = null;
+
 const popup = new Popup(handleConfirmDelete);
 popup.setEventListeners();
 
 function handleUpdateClick() {
-  console.log('update button');
+  currentNote = this.note;
+  changingNote = this.getChangingNote();
 
+  currentNote.replaceWith(changingNote);
+}
+
+function handleSubmitChangingClick() {
   console.log(this);
+}
+
+function handleCancelChangingClick() {
+  changingNote.replaceWith(currentNote);
 }
 
 function findNote(note) {
@@ -43,6 +54,8 @@ function createNote(data, id) {
     handleUpdateClick,
     handleDeleteClick,
     id,
+    handleCancelChangingClick,
+    handleSubmitChangingClick,
   });
 
   return newNote.getNote();

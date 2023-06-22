@@ -1,7 +1,7 @@
-export const form = document.querySelector('.note__form');
-export const submitButton = form.querySelector('.note__button_submit');
+export const form = document.querySelector('.adding');
+export const submitButton = form.querySelector('.adding__button_submit');
 export const inputList = Array.from(form.querySelectorAll('.forValidation'));
-export const container = document.querySelector('.note__list');
+export const container = document.querySelector('.notes');
 
 export const validationSettings = {
   formSelector: '.note__form',
