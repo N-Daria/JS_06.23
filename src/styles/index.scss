@@ -1,11 +1,30 @@
 @import '../vendor/normalize.css';
 @import '../consts/consts.scss';
 @import '../blocks/popup.scss';
+@import '../blocks/body.scss';
+@import '../blocks/form.scss';
+@import '../blocks/list.scss';
+@import '../blocks/body.scss';
+@import '../blocks/body.scss';
+@import '../blocks/body.scss';
 
 .note__input_error {
-  background-color: red;
+  outline: 3px red solid;
 }
 
 button {
   cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+}
+
+.popup__close {
+  background-color: inherit;
+  font-size: 30px;
+}
+
+input,
+textarea {
+  padding: 10px 20px;
+  border-radius: 10px;
 }

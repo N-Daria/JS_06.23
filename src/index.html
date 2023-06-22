@@ -8,7 +8,7 @@
   </head>
 
   <body class="body">
-    <form class="adding">
+    <form class="adding note__form">
       <!-- forValidation - class for serialization -->
       <input
         class="forValidation"
@@ -55,7 +55,7 @@
         <h2 class="note__header"></h2>
         <p class="note__text"></p>
 
-        <div>
+        <div class="note__buttons">
           <button type="button" class="note__button_delete">delete</button>
           <button type="button" class="note__button_update">update</button>
         </div>
@@ -63,7 +63,7 @@
     </template>
 
     <template id="changing">
-      <form class="note__item">
+      <form class="changing__form note__form">
         <p class="note__date"></p>
 
         <input

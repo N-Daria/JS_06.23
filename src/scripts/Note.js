@@ -60,7 +60,7 @@ export default class Note {
   }
 
   generateChangingTemplate() {
-    const note = this.changingTemplate.content.querySelector('.note__item').cloneNode(true);
+    const note = this.changingTemplate.content.querySelector('.changing__form').cloneNode(true);
 
     return note;
   }
@@ -88,6 +88,6 @@ export default class Note {
 
   changingSetEventListeners() {
     this.cancelChanginglButton.addEventListener('click', () => this.handleCancelChangingClick());
-    this.updateChangingButton.addEventListener('click', this.handleSubmitChangingClick);
+    this.changingNote.addEventListener('submit', this.handleSubmitChangingClick);
   }
 }
